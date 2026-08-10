@@ -1,11 +1,13 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Cart } from './cart/cart';
+import { Catalog } from './catalog/catalog';
+import { SiteHeader } from './site-header/site-header';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [SiteHeader, Catalog, Cart],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App {
   protected readonly title = signal('ms-ecommerce');

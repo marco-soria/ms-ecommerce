@@ -1,0 +1,63 @@
+@let item = product();
+@let level = item.stock | stockLabel;
+@let isCompact = compact();
+
+<article
+  [class]="
+    isCompact
+      ? 'flex gap-3'
+      : 'flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition dark:border-slate-700 dark:bg-slate-900'
+  "
+  [class.opacity-70]="level === 'out'"
+>
+  <div
+    [class]="
+      isCompact
+        ? 'h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800'
+        : 'relative aspect-square overflow-hidden bg-slate-100 dark:bg-slate-800'
+    "
+  >
+    <img [src]="item.image" [alt]="item.name" class="h-full w-full object-cover" loading="lazy" />
+  </div>
+
+  <div [class]="isCompact ? 'min-w-0 flex-1 space-y-1' : 'flex flex-1 flex-col gap-3 p-4'">
+    <div class="space-y-1">
+      <h3
+        [class]="
+          isCompact
+            ? 'truncate text-sm font-semibold text-slate-900 dark:text-slate-100'
+            : 'text-lg font-semibold text-slate-900 dark:text-slate-100'
+        "
+      >
+        {{ item.name }}
+      </h3>
+      <p
+        [class]="
+          isCompact
+            ? 'text-sm font-bold text-teal-700 dark:text-teal-400'
+            : 'text-xl font-bold text-teal-700 dark:text-teal-400'
+        "
+      >
+        {{ item.price | currency: 'USD' : 'symbol' : '1.2-2' }}
+      </p>
+    </div>
+
+    <p
+      class="inline-flex w-fit rounded-md font-medium"
+      [class]="
+        (isCompact ? 'px-1.5 py-0.5 text-[10px] ' : 'px-2 py-1 text-xs ') +
+        (level === 'out'
+          ? 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300'
+          : level === 'low'
+            ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+            : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300')
+      "
+    >
+      {{ item.stock | stockLabel }}
+    </p>
+
+    <div [class]="isCompact ? 'pt-1' : 'mt-auto pt-2'">
+      <ng-content />
+    </div>
+  </div>
+</article>
