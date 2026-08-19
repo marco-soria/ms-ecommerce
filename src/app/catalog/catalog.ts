@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, output, signal } from '@angular/core';
 import { IProduct } from '../models/product.model';
 import { ProductDetails } from '../product-details/product-details';
 import { CartService } from '../services/cart.service';
@@ -15,8 +15,26 @@ export class Catalog {
   readonly cartService = inject(CartService);
 
   readonly products = signal<IProduct[]>([]);
+  readonly favorites = signal<IProduct[]>([]);
+  readonly searchText = signal('');
   readonly loading = signal(true);
   readonly error = signal<string | null>(null);
+  readonly favoritesCountChange = output<number>();
+
+  readonly filteredProducts = computed(() => {
+    const query = this.searchText().trim().toLowerCase();
+    const list = this.products();
+
+    if (!query) {
+      return list;
+    }
+
+    return list.filter((product) =>
+      product.name.toLowerCase().includes(query),
+    );
+  });
+
+  readonly favoritesCount = computed(() => this.favorites().length);
 
   constructor() {
     this.productService.getProducts().subscribe({
@@ -29,6 +47,24 @@ export class Catalog {
         this.loading.set(false);
       },
     });
+  }
+
+  onSearchInput(event: Event): void {
+    this.searchText.set((event.target as HTMLInputElement).value);
+  }
+
+  isFavorite(product: IProduct): boolean {
+    return this.favorites().some((item) => item.id === product.id);
+  }
+
+  onToggleFavorite(product: IProduct): void {
+    this.favorites.update((items) => {
+      const exists = items.some((item) => item.id === product.id);
+      return exists
+        ? items.filter((item) => item.id !== product.id)
+        : [...items, product];
+    });
+    this.favoritesCountChange.emit(this.favoritesCount());
   }
 
   quantityOf(product: IProduct): number {
@@ -44,7 +80,10 @@ export class Catalog {
   }
 
   canIncrease(product: IProduct): boolean {
-    return product.stock > 0 && this.cartService.quantityOf(product.id) < product.stock;
+    return (
+      product.stock > 0 &&
+      this.cartService.quantityOf(product.id) < product.stock
+    );
   }
 
   canDecrease(product: IProduct): boolean {

@@ -3,9 +3,21 @@
 >
   <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
     <div class="flex items-center gap-3">
-      <span class="text-xl font-bold tracking-tight text-teal-700 dark:text-teal-400">
+      <button
+        type="button"
+        class="text-xl font-bold tracking-tight text-teal-700 dark:text-teal-400"
+        (click)="goTo('shop')"
+      >
         MS Ecommerce
-      </span>
+      </button>
+
+      <!-- @if (favoritesCount() > 0) {
+        <span
+          class="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-semibold text-rose-700 dark:bg-rose-950 dark:text-rose-300"
+        >
+          {{ favoritesCount() }} favorites
+        </span>
+      } -->
 
       <!-- @if (cartService.totalItems() > 0) {
         <span
@@ -16,36 +28,80 @@
       } -->
     </div>
 
-    <button
-      type="button"
-      class="group relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-slate-100 text-slate-700 shadow-sm transition-all duration-200 hover:bg-slate-200 hover:text-slate-900 hover:shadow-md focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-teal-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-slate-100"
-      (click)="toggleDarkMode()"
-      [attr.aria-label]="isDark() ? 'Switch to light mode' : 'Switch to dark mode'"
-      [attr.title]="isDark() ? 'Light mode' : 'Dark mode'"
-    >
-      @if (isDark()) {
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          class="h-5 w-5 text-amber-400 transition-transform duration-300 group-hover:rotate-12"
-          aria-hidden="true"
+    <div class="flex items-center gap-2">
+      <nav class="flex items-center gap-1">
+        <button
+          type="button"
+          class="rounded-lg px-3 py-2 text-sm font-medium transition"
+          [class]="
+            currentView() === 'shop'
+              ? 'bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-300'
+              : 'text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800'
+          "
+          (click)="goTo('shop')"
+
+
+
         >
-          <path
-            d="M12 3.5a1 1 0 0 1 1 1V6a1 1 0 1 1-2 0V4.5a1 1 0 0 1 1-1Zm0 12a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm7.5-2.5a1 1 0 1 1 0 2H18a1 1 0 1 1 0-2h1.5ZM6 13a1 1 0 1 1 0 2H4.5a1 1 0 1 1 0-2H6Zm10.95 4.364a1 1 0 0 1 0 1.414l-1.06 1.061a1 1 0 1 1-1.415-1.415l1.061-1.06a1 1 0 0 1 1.414 0ZM9.525 6.161a1 1 0 0 1 0 1.414L8.464 8.636A1 1 0 0 1 7.05 7.222l1.06-1.061a1 1 0 0 1 1.415 0Zm7.01 1.061a1 1 0 0 1-1.414 0L14.06 6.161A1 1 0 1 1 15.475 4.75l1.06 1.06a1 1 0 0 1 0 1.415ZM9.525 17.839a1 1 0 0 1-1.415 0l-1.06-1.061A1 1 0 1 1 8.464 15.364l1.061 1.06a1 1 0 0 1 0 1.415ZM12 18a1 1 0 0 1 1 1v1.5a1 1 0 1 1-2 0V19a1 1 0 0 1 1-1Z"
-          />
-        </svg>
-      } @else {
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          class="h-5 w-5 text-slate-700 transition-transform duration-300 group-hover:-rotate-12"
-          aria-hidden="true"
+          Shop
+        </button>
+        <button
+          type="button"
+          class="rounded-lg px-3 py-2 text-sm font-medium transition"
+          [class]="
+            currentView() === 'login'
+              ? 'bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-300'
+              : 'text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800'
+          "
+          (click)="goTo('login')"
         >
-          <path d="M21 14.3A8.5 8.5 0 0 1 9.7 3a7 7 0 1 0 11.3 11.3Z" />
-        </svg>
-      }
-    </button>
+          Login
+        </button>
+        <button
+          type="button"
+          class="rounded-lg px-3 py-2 text-sm font-medium transition"
+          [class]="
+            currentView() === 'register'
+              ? 'bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-300'
+              : 'text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800'
+          "
+          (click)="goTo('register')"
+        >
+          Register
+        </button>
+      </nav>
+
+      <button
+        type="button"
+        class="group relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-slate-100 text-slate-700 shadow-sm transition-all duration-200 hover:bg-slate-200 hover:text-slate-900 hover:shadow-md focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-teal-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-slate-100"
+        (click)="toggleDarkMode()"
+        [attr.aria-label]="isDark() ? 'Switch to light mode' : 'Switch to dark mode'"
+        [attr.title]="isDark() ? 'Light mode' : 'Dark mode'"
+      >
+        @if (isDark()) {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="h-5 w-5 text-amber-400 transition-transform duration-300 group-hover:rotate-12"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 3.5a1 1 0 0 1 1 1V6a1 1 0 1 1-2 0V4.5a1 1 0 0 1 1-1Zm0 12a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm7.5-2.5a1 1 0 1 1 0 2H18a1 1 0 1 1 0-2h1.5ZM6 13a1 1 0 1 1 0 2H4.5a1 1 0 1 1 0-2H6Zm10.95 4.364a1 1 0 0 1 0 1.414l-1.06 1.061a1 1 0 1 1-1.415-1.415l1.061-1.06a1 1 0 0 1 1.414 0ZM9.525 6.161a1 1 0 0 1 0 1.414L8.464 8.636A1 1 0 0 1 7.05 7.222l1.06-1.061a1 1 0 0 1 1.415 0Zm7.01 1.061a1 1 0 0 1-1.414 0L14.06 6.161A1 1 0 1 1 15.475 4.75l1.06 1.06a1 1 0 0 1 0 1.415ZM9.525 17.839a1 1 0 0 1-1.415 0l-1.06-1.061A1 1 0 1 1 8.464 15.364l1.061 1.06a1 1 0 0 1 0 1.415ZM12 18a1 1 0 0 1 1 1v1.5a1 1 0 1 1-2 0V19a1 1 0 0 1 1-1Z"
+            />
+          </svg>
+        } @else {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="h-5 w-5 text-slate-700 transition-transform duration-300 group-hover:-rotate-12"
+            aria-hidden="true"
+          >
+            <path d="M21 14.3A8.5 8.5 0 0 1 9.7 3a7 7 0 1 0 11.3 11.3Z" />
+          </svg>
+        }
+      </button>
+    </div>
   </div>
 </header>

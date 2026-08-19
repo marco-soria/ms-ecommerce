@@ -1,4 +1,5 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, input, output, signal } from '@angular/core';
+import { AppView } from '../models/app-view.model';
 import { CartService } from '../services/cart.service';
 
 @Component({
@@ -9,6 +10,9 @@ import { CartService } from '../services/cart.service';
 })
 export class SiteHeader {
   readonly cartService = inject(CartService);
+  readonly currentView = input.required<AppView>();
+  readonly favoritesCount = input(0);
+  readonly viewChange = output<AppView>();
   readonly isDark = signal(false);
 
   constructor() {
@@ -17,6 +21,10 @@ export class SiteHeader {
     const dark = saved === 'dark' || (!saved && prefersDark);
     this.isDark.set(dark);
     this.applyTheme(dark);
+  }
+
+  goTo(view: AppView): void {
+    this.viewChange.emit(view);
   }
 
   toggleDarkMode(): void {
