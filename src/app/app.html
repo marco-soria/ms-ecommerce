@@ -19,6 +19,9 @@
         (navigateToShop)="setView('shop')"
       />
     }
+    @case ('admin') {
+      <app-product-admin />
+    }
     @default {
       <main class="mx-auto grid max-w-7xl gap-6 px-4 py-8 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
         <app-catalog (favoritesCountChange)="onFavoritesCountChange($event)" />

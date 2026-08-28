@@ -49,6 +49,18 @@
           type="button"
           class="rounded-lg px-3 py-2 text-sm font-medium transition"
           [class]="
+            currentView() === 'admin'
+              ? 'bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-300'
+              : 'text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800'
+          "
+          (click)="goTo('admin')"
+        >
+          Admin
+        </button>
+        <button
+          type="button"
+          class="rounded-lg px-3 py-2 text-sm font-medium transition"
+          [class]="
             currentView() === 'login'
               ? 'bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-300'
               : 'text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800'

@@ -1,1 +1,1 @@
-export type AppView = 'shop' | 'login' | 'register';
+export type AppView = 'shop' | 'admin' | 'login' | 'register';

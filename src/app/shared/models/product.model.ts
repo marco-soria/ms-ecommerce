@@ -5,3 +5,6 @@ export interface IProduct {
   image: string;
   stock: number;
 }
+
+export type ProductCreate = Omit<IProduct, 'id'>;
+export type ProductUpdate = Partial<Omit<IProduct, 'id'>>;

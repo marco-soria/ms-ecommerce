@@ -111,13 +111,13 @@
       All products
     </h2>
 
-    @if (loading()) {
+    @if (productService.loading()) {
       <p class="text-slate-500 dark:text-slate-400">Loading products...</p>
-    } @else if (error()) {
+    } @else if (productService.error()) {
       <p class="rounded-lg bg-rose-50 px-4 py-3 text-rose-700 dark:bg-rose-950 dark:text-rose-300">
-        {{ error() }}
+        {{ productService.error() }}
       </p>
-    } @else if (products().length === 0) {
+    } @else if (productService.products().length === 0) {
       <p class="text-slate-500 dark:text-slate-400">No products available.</p>
     } @else if (filteredProducts().length === 0) {
       <p class="rounded-xl border border-dashed border-slate-300 px-4 py-8 text-center text-slate-500 dark:border-slate-600 dark:text-slate-400">

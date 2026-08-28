@@ -11,19 +11,16 @@ import { ProductDetails } from '@shared/ui/product-details/product-details';
   styleUrl: './catalog.css',
 })
 export class Catalog {
-  private readonly productService = inject(ProductService);
+  readonly productService = inject(ProductService);
   readonly cartService = inject(CartService);
 
-  readonly products = signal<IProduct[]>([]);
   readonly favorites = signal<IProduct[]>([]);
   readonly searchText = signal('');
-  readonly loading = signal(true);
-  readonly error = signal<string | null>(null);
   readonly favoritesCountChange = output<number>();
 
   readonly filteredProducts = computed(() => {
     const query = this.searchText().trim().toLowerCase();
-    const list = this.products();
+    const list = this.productService.products();
 
     if (!query) {
       return list;
@@ -35,19 +32,6 @@ export class Catalog {
   });
 
   readonly favoritesCount = computed(() => this.favorites().length);
-
-  constructor() {
-    this.productService.getProducts().subscribe({
-      next: (products) => {
-        this.products.set(products);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.error.set('Could not load the catalog.');
-        this.loading.set(false);
-      },
-    });
-  }
 
   onSearchInput(event: Event): void {
     this.searchText.set((event.target as HTMLInputElement).value);

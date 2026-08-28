@@ -5,10 +5,11 @@ import { Login } from '@features/auth/pages/login/login';
 import { Register } from '@features/auth/pages/register/register';
 import { Cart } from '@features/cart/pages/cart/cart';
 import { Catalog } from '@features/catalog/pages/catalog/catalog';
+import { ProductAdmin } from '@features/catalog/pages/product-admin/product-admin';
 
 @Component({
   selector: 'app-root',
-  imports: [SiteHeader, Catalog, Cart, Login, Register],
+  imports: [SiteHeader, Catalog, Cart, Login, Register, ProductAdmin],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
