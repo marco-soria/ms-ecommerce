@@ -1,7 +1,7 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { CartItem } from '../cart-item/cart-item';
-import { CartService } from '../services/cart.service';
+import { CartService } from '@features/cart/data-access/cart.service';
+import { CartItem } from '@features/cart/ui/cart-item/cart-item';
 
 @Component({
   selector: 'app-cart',

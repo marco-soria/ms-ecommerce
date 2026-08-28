@@ -1,6 +1,6 @@
 import { Component, inject, input, output, signal } from '@angular/core';
-import { AppView } from '../models/app-view.model';
-import { CartService } from '../services/cart.service';
+import { AppView } from '@core/models/app-view.model';
+import { CartService } from '@features/cart/data-access/cart.service';
 
 @Component({
   selector: 'app-site-header',

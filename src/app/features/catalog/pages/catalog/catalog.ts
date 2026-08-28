@@ -1,8 +1,8 @@
 import { Component, computed, inject, output, signal } from '@angular/core';
-import { IProduct } from '../models/product.model';
-import { ProductDetails } from '../product-details/product-details';
-import { CartService } from '../services/cart.service';
-import { ProductService } from '../services/product.service';
+import { CartService } from '@features/cart/data-access/cart.service';
+import { ProductService } from '@features/catalog/data-access/product.service';
+import { IProduct } from '@shared/models/product.model';
+import { ProductDetails } from '@shared/ui/product-details/product-details';
 
 @Component({
   selector: 'app-catalog',

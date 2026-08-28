@@ -1,10 +1,10 @@
 import { Component, signal } from '@angular/core';
-import { Login } from './auth/login/login';
-import { Register } from './auth/register/register';
-import { Cart } from './cart/cart';
-import { Catalog } from './catalog/catalog';
-import { AppView } from './models/app-view.model';
-import { SiteHeader } from './site-header/site-header';
+import { AppView } from '@core/models/app-view.model';
+import { SiteHeader } from '@core/layout/site-header/site-header';
+import { Login } from '@features/auth/pages/login/login';
+import { Register } from '@features/auth/pages/register/register';
+import { Cart } from '@features/cart/pages/cart/cart';
+import { Catalog } from '@features/catalog/pages/catalog/catalog';
 
 @Component({
   selector: 'app-root',

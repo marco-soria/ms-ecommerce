@@ -1,4 +1,4 @@
-import { StockLabelPipe } from './stock-label-pipe';
+import { StockLabelPipe } from './stock-label.pipe';
 
 describe('StockLabelPipe', () => {
   it('create an instance', () => {

@@ -1,7 +1,7 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, input, output } from '@angular/core';
-import { IProduct } from '../models/product.model';
-import { StockLabelPipe, StockLevelPipe } from '../pipes/stock-label-pipe';
+import { IProduct } from '@shared/models/product.model';
+import { StockLabelPipe, StockLevelPipe } from '@shared/pipes/stock-label.pipe';
 
 
 @Component({
