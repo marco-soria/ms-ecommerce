@@ -1,18 +1,15 @@
-import { Component, inject, input, output, signal } from '@angular/core';
-import { AppView } from '@core/models/app-view.model';
+import { Component, inject, signal } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CartService } from '@features/cart/data-access/cart.service';
 
 @Component({
   selector: 'app-site-header',
-  imports: [],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './site-header.html',
   styleUrl: './site-header.css',
 })
 export class SiteHeader {
   readonly cartService = inject(CartService);
-  readonly currentView = input.required<AppView>();
-  readonly favoritesCount = input(0);
-  readonly viewChange = output<AppView>();
   readonly isDark = signal(false);
 
   constructor() {
@@ -21,10 +18,6 @@ export class SiteHeader {
     const dark = saved === 'dark' || (!saved && prefersDark);
     this.isDark.set(dark);
     this.applyTheme(dark);
-  }
-
-  goTo(view: AppView): void {
-    this.viewChange.emit(view);
   }
 
   toggleDarkMode(): void {

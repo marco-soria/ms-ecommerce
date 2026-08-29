@@ -1,4 +1,4 @@
-<section class="space-y-8">
+<main class="mx-auto max-w-7xl space-y-8 px-4 py-8">
   <header class="space-y-4">
     <div class="flex flex-wrap items-end justify-between gap-3">
       <div class="space-y-2">
@@ -15,40 +15,6 @@
       >
         Favorites: {{ favoritesCount() }}
       </span>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </div>
 
     <label class="block max-w-xl space-y-1.5">
@@ -65,9 +31,7 @@
 
   @if (favorites().length > 0) {
     <section class="space-y-4">
-      <h2 class="text-xl font-bold text-slate-900 dark:text-slate-50">
-        Favorites
-      </h2>
+      <h2 class="text-xl font-bold text-slate-900 dark:text-slate-50">Favorites</h2>
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
         @for (product of favorites(); track product.id) {
           <app-product-details
@@ -75,30 +39,39 @@
             [isFavorite]="true"
             (toggleFavorite)="onToggleFavorite($event)"
           >
-            <div class="flex items-center justify-center gap-3">
-              <button
-                type="button"
-                class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 text-xl font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
-                [disabled]="!canDecrease(product)"
-                (click)="decrease(product)"
-                aria-label="Decrease quantity"
-              >
-                −
-              </button>
+            <div class="space-y-3">
+              <div class="flex items-center justify-center gap-3">
+                <button
+                  type="button"
+                  class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 text-xl font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+                  [disabled]="!canDecrease(product)"
+                  (click)="decrease(product)"
+                  aria-label="Decrease quantity"
+                >
+                  −
+                </button>
 
-              <span class="min-w-8 text-center text-lg font-semibold text-slate-900 dark:text-slate-100">
-                {{ quantityOf(product) }}
-              </span>
+                <span class="min-w-8 text-center text-lg font-semibold text-slate-900 dark:text-slate-100">
+                  {{ quantityOf(product) }}
+                </span>
 
-              <button
-                type="button"
-                class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 text-xl font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
-                [disabled]="!canIncrease(product)"
-                (click)="increase(product)"
-                aria-label="Increase quantity"
+                <button
+                  type="button"
+                  class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 text-xl font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+                  [disabled]="!canIncrease(product)"
+                  (click)="increase(product)"
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+              </div>
+
+              <a
+                [routerLink]="['/product', product.id]"
+                class="block text-center text-sm font-semibold text-teal-700 hover:underline dark:text-teal-400"
               >
-                +
-              </button>
+                View details
+              </a>
             </div>
           </app-product-details>
         }
@@ -107,9 +80,7 @@
   }
 
   <section class="space-y-4">
-    <h2 class="text-xl font-bold text-slate-900 dark:text-slate-50">
-      All products
-    </h2>
+    <h2 class="text-xl font-bold text-slate-900 dark:text-slate-50">All products</h2>
 
     @if (productService.loading()) {
       <p class="text-slate-500 dark:text-slate-400">Loading products...</p>
@@ -120,7 +91,9 @@
     } @else if (productService.products().length === 0) {
       <p class="text-slate-500 dark:text-slate-400">No products available.</p>
     } @else if (filteredProducts().length === 0) {
-      <p class="rounded-xl border border-dashed border-slate-300 px-4 py-8 text-center text-slate-500 dark:border-slate-600 dark:text-slate-400">
+      <p
+        class="rounded-xl border border-dashed border-slate-300 px-4 py-8 text-center text-slate-500 dark:border-slate-600 dark:text-slate-400"
+      >
         No products found.
       </p>
     } @else {
@@ -131,34 +104,43 @@
             [isFavorite]="isFavorite(product)"
             (toggleFavorite)="onToggleFavorite($event)"
           >
-            <div class="flex items-center justify-center gap-3">
-              <button
-                type="button"
-                class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 text-xl font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
-                [disabled]="!canDecrease(product)"
-                (click)="decrease(product)"
-                aria-label="Decrease quantity"
-              >
-                −
-              </button>
+            <div class="space-y-3">
+              <div class="flex items-center justify-center gap-3">
+                <button
+                  type="button"
+                  class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 text-xl font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+                  [disabled]="!canDecrease(product)"
+                  (click)="decrease(product)"
+                  aria-label="Decrease quantity"
+                >
+                  −
+                </button>
 
-              <span class="min-w-8 text-center text-lg font-semibold text-slate-900 dark:text-slate-100">
-                {{ quantityOf(product) }}
-              </span>
+                <span class="min-w-8 text-center text-lg font-semibold text-slate-900 dark:text-slate-100">
+                  {{ quantityOf(product) }}
+                </span>
 
-              <button
-                type="button"
-                class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 text-xl font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
-                [disabled]="!canIncrease(product)"
-                (click)="increase(product)"
-                aria-label="Increase quantity"
+                <button
+                  type="button"
+                  class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 text-xl font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+                  [disabled]="!canIncrease(product)"
+                  (click)="increase(product)"
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+              </div>
+
+              <a
+                [routerLink]="['/product', product.id]"
+                class="block text-center text-sm font-semibold text-teal-700 hover:underline dark:text-teal-400"
               >
-                +
-              </button>
+                View details
+              </a>
             </div>
           </app-product-details>
         }
       </div>
     }
   </section>
-</section>
+</main>

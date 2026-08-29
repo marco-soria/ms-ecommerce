@@ -45,21 +45,13 @@
 
     <p class="text-center text-sm text-slate-600 dark:text-slate-400">
       No account?
-      <button
-        type="button"
-        class="font-semibold text-teal-700 hover:underline dark:text-teal-400"
-        (click)="navigateToRegister.emit()"
-      >
+      <a routerLink="/register" class="font-semibold text-teal-700 hover:underline dark:text-teal-400">
         Register
-      </button>
+      </a>
       ·
-      <button
-        type="button"
-        class="font-semibold text-teal-700 hover:underline dark:text-teal-400"
-        (click)="navigateToShop.emit()"
-      >
+      <a routerLink="/catalog" class="font-semibold text-teal-700 hover:underline dark:text-teal-400">
         Back to shop
-      </button>
+      </a>
     </p>
   </form>
 </section>

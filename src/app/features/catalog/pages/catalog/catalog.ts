@@ -1,4 +1,5 @@
-import { Component, computed, inject, output, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { CartService } from '@features/cart/data-access/cart.service';
 import { ProductService } from '@features/catalog/data-access/product.service';
 import { IProduct } from '@shared/models/product.model';
@@ -6,7 +7,7 @@ import { ProductDetails } from '@shared/ui/product-details/product-details';
 
 @Component({
   selector: 'app-catalog',
-  imports: [ProductDetails],
+  imports: [ProductDetails, RouterLink],
   templateUrl: './catalog.html',
   styleUrl: './catalog.css',
 })
@@ -16,7 +17,6 @@ export class Catalog {
 
   readonly favorites = signal<IProduct[]>([]);
   readonly searchText = signal('');
-  readonly favoritesCountChange = output<number>();
 
   readonly filteredProducts = computed(() => {
     const query = this.searchText().trim().toLowerCase();
@@ -48,7 +48,6 @@ export class Catalog {
         ? items.filter((item) => item.id !== product.id)
         : [...items, product];
     });
-    this.favoritesCountChange.emit(this.favoritesCount());
   }
 
   quantityOf(product: IProduct): number {
