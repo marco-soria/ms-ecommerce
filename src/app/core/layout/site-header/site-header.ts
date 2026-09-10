@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '@core/auth/auth.service';
 import { CartService } from '@features/cart/data-access/cart.service';
 
 @Component({
@@ -10,6 +11,8 @@ import { CartService } from '@features/cart/data-access/cart.service';
 })
 export class SiteHeader {
   readonly cartService = inject(CartService);
+  readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
   readonly isDark = signal(false);
 
   constructor() {
@@ -18,6 +21,11 @@ export class SiteHeader {
     const dark = saved === 'dark' || (!saved && prefersDark);
     this.isDark.set(dark);
     this.applyTheme(dark);
+  }
+
+  logout(): void {
+    this.auth.logout();
+    void this.router.navigate(['/catalog']);
   }
 
   toggleDarkMode(): void {

@@ -37,26 +37,47 @@
           Cart
         </a>
         <a
+          routerLink="/checkout"
+          routerLinkActive="bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-300"
+          class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+        >
+          Checkout
+        </a>
+        <a
           routerLink="/admin"
           routerLinkActive="bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-300"
           class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
         >
           Admin
         </a>
-        <a
-          routerLink="/login"
-          routerLinkActive="bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-300"
-          class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
-        >
-          Login
-        </a>
-        <a
-          routerLink="/register"
-          routerLinkActive="bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-300"
-          class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
-        >
-          Register
-        </a>
+
+        @if (auth.isLoggedIn()) {
+          <span class="px-2 text-sm text-slate-500 dark:text-slate-400">
+            {{ auth.user()?.name }}
+          </span>
+          <button
+            type="button"
+            class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+            (click)="logout()"
+          >
+            Logout
+          </button>
+        } @else {
+          <a
+            routerLink="/login"
+            routerLinkActive="bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-300"
+            class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+          >
+            Login
+          </a>
+          <a
+            routerLink="/register"
+            routerLinkActive="bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-300"
+            class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+          >
+            Register
+          </a>
+        }
       </nav>
 
       <button

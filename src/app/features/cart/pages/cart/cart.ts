@@ -27,7 +27,6 @@ export class Cart {
   }
 
   checkout(): void {
-    this.cartService.clear();
-    void this.router.navigate(['/catalog']);
+    void this.router.navigate(['/checkout']);
   }
 }
