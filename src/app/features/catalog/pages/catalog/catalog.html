@@ -3,9 +3,9 @@
     <div class="flex flex-wrap items-end justify-between gap-3">
       <div class="space-y-2">
         <h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50">Catalog</h1>
-        <!-- <p class="text-slate-600 dark:text-slate-400">
-          Browse products and adjust quantities with + and -.
-        </p> -->
+        <p class="text-slate-600 dark:text-slate-400">
+          Search products with debounce, pagination and URL sync.
+        </p>
       </div>
 
       <span
@@ -21,7 +21,7 @@
         type="search"
         placeholder="Search by product name..."
         class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-slate-900 outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
-        [value]="searchText()"
+        [value]="searchTerm()"
         (input)="onSearchInput($event)"
       />
     </label>
@@ -80,17 +80,22 @@
   }
 
   <section class="space-y-4">
-    <h2 class="text-xl font-bold text-slate-900 dark:text-slate-50">All products</h2>
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <h2 class="text-xl font-bold text-slate-900 dark:text-slate-50">All products</h2>
+      <p class="text-sm text-slate-500 dark:text-slate-400">Page {{ currentPage() }}</p>
+    </div>
 
-    @if (productService.loading()) {
-      <p class="text-slate-500 dark:text-slate-400">Loading products...</p>
-    } @else if (productService.error()) {
+    @if (loading()) {
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        @for (item of skeletonItems; track item) {
+          <app-skeleton-card />
+        }
+      </div>
+    } @else if (error()) {
       <p class="rounded-lg bg-rose-50 px-4 py-3 text-rose-700 dark:bg-rose-950 dark:text-rose-300">
-        {{ productService.error() }}
+        {{ error() }}
       </p>
-    } @else if (productService.products().length === 0) {
-      <p class="text-slate-500 dark:text-slate-400">No products available.</p>
-    } @else if (filteredProducts().length === 0) {
+    } @else if (products().length === 0) {
       <p
         class="rounded-xl border border-dashed border-slate-300 px-4 py-8 text-center text-slate-500 dark:border-slate-600 dark:text-slate-400"
       >
@@ -98,7 +103,7 @@
       </p>
     } @else {
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-        @for (product of filteredProducts(); track product.id) {
+        @for (product of products(); track product.id) {
           <app-product-details
             [product]="product"
             [isFavorite]="isFavorite(product)"
@@ -142,6 +147,30 @@
             </div>
           </app-product-details>
         }
+      </div>
+    }
+
+    @if (!loading() && !error() && (hasPrevPage() || hasNextPage())) {
+      <div class="flex items-center justify-center gap-3 pt-2">
+        <button
+          type="button"
+          class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+          [disabled]="!hasPrevPage()"
+          (click)="prevPage()"
+        >
+          Previous
+        </button>
+        <span class="min-w-20 text-center text-sm font-medium text-slate-600 dark:text-slate-400">
+          Page {{ currentPage() }}
+        </span>
+        <button
+          type="button"
+          class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+          [disabled]="!hasNextPage()"
+          (click)="nextPage()"
+        >
+          Next
+        </button>
       </div>
     }
   </section>

@@ -21,7 +21,6 @@ describe('Catalog', () => {
 
     fixture = TestBed.createComponent(Catalog);
     component = fixture.componentInstance;
-    await fixture.whenStable();
   });
 
   it('should create', () => {

@@ -55,4 +55,31 @@ describe('ProductService', () => {
 
     req.flush(mockProducts);
   });
+
+  it('should search products with pagination offset', () => {
+    const mockProducts: IProduct[] = [
+      {
+        id: 7,
+        name: 'Monitor',
+        price: 500,
+        image: 'https://example.com/monitor.jpg',
+        stock: 3,
+      },
+    ];
+
+    service.search('mon', 2, 6).subscribe((products) => {
+      expect(products).toEqual(mockProducts);
+    });
+
+    const req = httpTesting.expectOne(
+      (request) =>
+        request.url.startsWith(resourceUrl) &&
+        request.method === 'GET' &&
+        request.params.get('name') === 'ilike.*mon*' &&
+        request.params.get('limit') === '6' &&
+        request.params.get('offset') === '6',
+    );
+
+    req.flush(mockProducts);
+  });
 });

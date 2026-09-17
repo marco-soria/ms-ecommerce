@@ -50,6 +50,35 @@ export class ProductService {
     );
   }
 
+  /**
+   * Search products with pagination (PostgREST limit/offset).
+   * Empty `term` returns the full catalog page.
+   */
+  search(term: string, page = 1, limit = 6): Observable<IProduct[]> {
+    const safePage = Math.max(1, page);
+    const safeLimit = Math.max(1, limit);
+    const offset = (safePage - 1) * safeLimit;
+    const query = term.trim();
+
+    let params = new HttpParams()
+      .set('select', this.selectColumns)
+      .set('order', 'id.asc')
+      .set('limit', String(safeLimit))
+      .set('offset', String(offset));
+
+    if (query) {
+      params = params.set('name', `ilike.*${query}*`);
+    }
+
+    return this.http.get<IProduct[]>(this.resourceUrl, { params }).pipe(
+      map((products) => this.normalizeProducts(products)),
+      catchError((error: unknown) => {
+        console.error('Could not search products', error);
+        return throwError(() => new Error('Could not search products.'));
+      }),
+    );
+  }
+
   crear(producto: ProductCreate | Partial<IProduct>): Observable<IProduct> {
     return this.http.post<IProduct[]>(this.resourceUrl, producto).pipe(
       map((rows) => this.firstOrThrow(rows, 'create')),
