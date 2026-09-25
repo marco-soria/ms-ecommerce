@@ -1,18 +1,17 @@
-name: Supabase Request
+name: Supabase Keep Alive
 
 on:
   schedule:
-    # Se ejecuta todos los días a las 00:00 UTC y a las 12:00 UTC
+    # Se ejecuta de forma segura dos veces al día para evitar la suspensión por inactividad
     - cron: '0 0,12 * * *'
-  workflow_dispatch:
+  workflow_dispatch: # Permite ejecutarlo manualmente desde la pestaña Actions si lo deseas
 
 jobs:
   ping-supabase:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Ping Supabase REST API
+      - name: Ping Supabase Auth Health Endpoint
         run: |
-          curl -f -i -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/products?select=count" \
-          -H "apikey: ${{ secrets.SUPABASE_KEY }}" \
-          -H "Authorization: Bearer ${{ secrets.SUPABASE_KEY }}"
+          curl -f -i -X GET "${{ secrets.SUPABASE_URL }}/auth/v1/health" \
+          -H "apikey: ${{ secrets.SUPABASE_KEY }}"
