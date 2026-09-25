@@ -6,7 +6,7 @@ import {
   ProductCreate,
   ProductUpdate,
 } from '@shared/models/product.model';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, catchError, map, of, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -75,6 +75,27 @@ export class ProductService {
       catchError((error: unknown) => {
         console.error('Could not search products', error);
         return throwError(() => new Error('Could not search products.'));
+      }),
+    );
+  }
+
+  /** Fetch products by id list (used by checkout stock validation). */
+  getByIds(ids: number[]): Observable<IProduct[]> {
+    const uniqueIds = [...new Set(ids.filter((id) => Number.isFinite(id)))];
+
+    if (uniqueIds.length === 0) {
+      return of([]);
+    }
+
+    const params = new HttpParams()
+      .set('select', this.selectColumns)
+      .set('id', `in.(${uniqueIds.join(',')})`);
+
+    return this.http.get<IProduct[]>(this.resourceUrl, { params }).pipe(
+      map((products) => this.normalizeProducts(products)),
+      catchError((error: unknown) => {
+        console.error('Could not load products by id', error);
+        return throwError(() => new Error('Could not verify product stock.'));
       }),
     );
   }

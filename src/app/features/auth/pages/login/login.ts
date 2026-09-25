@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   ReactiveFormsModule,
@@ -17,6 +17,9 @@ export class Login {
   private readonly fb = inject(FormBuilder);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+
+  readonly submitting = signal(false);
+  readonly formError = signal<string | null>(null);
 
   readonly loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -38,13 +41,18 @@ export class Login {
     }
 
     const { email, password } = this.loginForm.getRawValue();
+    this.submitting.set(true);
+    this.formError.set(null);
 
-    this.auth.login({
-      name: email.split('@')[0] || 'User',
-      email,
+    this.auth.login(email, password).subscribe({
+      next: () => {
+        this.submitting.set(false);
+        void this.router.navigate(['/checkout']);
+      },
+      error: (error: Error) => {
+        this.submitting.set(false);
+        this.formError.set(error.message);
+      },
     });
-
-    console.log({ email, password });
-    void this.router.navigate(['/checkout']);
   }
 }

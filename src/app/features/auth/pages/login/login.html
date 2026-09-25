@@ -51,12 +51,18 @@
       }
     </label>
 
+    @if (formError()) {
+      <p class="rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700 dark:bg-rose-950 dark:text-rose-300">
+        {{ formError() }}
+      </p>
+    }
+
     <button
       type="submit"
       class="w-full rounded-xl bg-teal-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-600 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500 dark:disabled:bg-slate-700 dark:disabled:text-slate-400"
-      [disabled]="loginForm.invalid"
+      [disabled]="loginForm.invalid || submitting()"
     >
-      Login
+      {{ submitting() ? 'Signing in...' : 'Login' }}
     </button>
 
     <p class="text-center text-sm text-slate-600 dark:text-slate-400">

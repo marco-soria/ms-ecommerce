@@ -21,111 +21,196 @@
   } @else {
     <div class="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
       <form
-        class="space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900"
+        class="space-y-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900"
         [formGroup]="checkoutForm"
         (ngSubmit)="onSubmit()"
       >
-        <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-50">Shipping & payment</h2>
+        <fieldset formGroupName="shipping" class="space-y-4">
+          <legend class="text-lg font-semibold text-slate-900 dark:text-slate-50">
+            Shipping
+          </legend>
 
-        <label class="block space-y-1.5">
-          <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Name</span>
-          <input
-            type="text"
-            formControlName="name"
-            autocomplete="name"
-            class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-slate-900 outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
-            [class.border-rose-500]="name.invalid && name.touched"
-          />
-          @if (name.invalid && name.touched) {
-            <p class="text-sm text-rose-600 dark:text-rose-400">Name is required.</p>
-          }
-        </label>
+          <label class="block space-y-1.5">
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Full name</span>
+            <input
+              type="text"
+              formControlName="fullName"
+              autocomplete="name"
+              class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-slate-900 outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
+              [class.border-rose-500]="fullName.invalid && fullName.touched"
+            />
+            @if (fullName.invalid && fullName.touched) {
+              <p class="text-sm text-rose-600 dark:text-rose-400">Full name is required.</p>
+            }
+          </label>
 
-        <label class="block space-y-1.5">
-          <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Email</span>
-          <input
-            type="email"
-            formControlName="email"
-            autocomplete="email"
-            class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-slate-900 outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
-            [class.border-rose-500]="email.invalid && email.touched"
-          />
-          @if (email.invalid && email.touched) {
-            <p class="text-sm text-rose-600 dark:text-rose-400">
-              @if (email.hasError('required')) {
-                Email is required.
-              } @else if (email.hasError('email')) {
-                Enter a valid email address.
+          <label class="block space-y-1.5">
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Address</span>
+            <input
+              type="text"
+              formControlName="address"
+              autocomplete="street-address"
+              class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-slate-900 outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
+              [class.border-rose-500]="address.invalid && address.touched"
+            />
+            @if (address.invalid && address.touched) {
+              <p class="text-sm text-rose-600 dark:text-rose-400">Address is required.</p>
+            }
+          </label>
+
+          <label class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+            <input
+              type="checkbox"
+              formControlName="useAlternativeAddress"
+              class="size-4 rounded border-slate-300 text-teal-700 focus:ring-teal-600"
+            />
+            Ship to a different address
+          </label>
+
+          <label class="block space-y-1.5">
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">
+              Alternative address
+            </span>
+            <input
+              type="text"
+              formControlName="alternativeAddress"
+              class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-slate-900 outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100 dark:disabled:bg-slate-800"
+              [class.border-rose-500]="
+                alternativeAddress.enabled &&
+                alternativeAddress.invalid &&
+                alternativeAddress.touched
+              "
+            />
+            @if (
+              alternativeAddress.enabled &&
+              alternativeAddress.invalid &&
+              alternativeAddress.touched
+            ) {
+              <p class="text-sm text-rose-600 dark:text-rose-400">
+                Alternative address is required.
+              </p>
+            }
+          </label>
+        </fieldset>
+
+        <fieldset formGroupName="payment" class="space-y-4">
+          <legend class="text-lg font-semibold text-slate-900 dark:text-slate-50">
+            Payment
+          </legend>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Payment method</mat-label>
+            <mat-select formControlName="method">
+              @for (option of paymentMethods; track option.value) {
+                <mat-option [value]="option.value">{{ option.label }}</mat-option>
               }
-            </p>
-          }
-        </label>
+            </mat-select>
+          </mat-form-field>
 
-        <label class="block space-y-1.5">
-          <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Address</span>
-          <input
-            type="text"
-            formControlName="address"
-            autocomplete="street-address"
-            class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-slate-900 outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
-            [class.border-rose-500]="address.invalid && address.touched"
-          />
-          @if (address.invalid && address.touched) {
-            <p class="text-sm text-rose-600 dark:text-rose-400">Address is required.</p>
-          }
-        </label>
+          <label class="block space-y-1.5">
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Card number</span>
+            <input
+              type="text"
+              formControlName="cardNumber"
+              inputmode="numeric"
+              maxlength="16"
+              autocomplete="cc-number"
+              placeholder="16 digits"
+              class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-slate-900 outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
+              [class.border-rose-500]="cardNumber.invalid && cardNumber.touched"
+            />
+            @if (cardNumber.invalid && cardNumber.touched) {
+              <p class="text-sm text-rose-600 dark:text-rose-400">
+                @if (cardNumber.hasError('required')) {
+                  Card number is required.
+                } @else if (cardNumber.hasError('pattern')) {
+                  Card number must be exactly 16 digits.
+                }
+              </p>
+            }
+          </label>
 
-        <label class="block space-y-1.5">
-          <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Card number</span>
-          <input
-            type="text"
-            formControlName="cardNumber"
-            inputmode="numeric"
-            maxlength="16"
-            autocomplete="cc-number"
-            placeholder="16 digits"
-            class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-slate-900 outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
-            [class.border-rose-500]="cardNumber.invalid && cardNumber.touched"
-          />
-          @if (cardNumber.invalid && cardNumber.touched) {
-            <p class="text-sm text-rose-600 dark:text-rose-400">
-              @if (cardNumber.hasError('required')) {
-                Card number is required.
-              } @else if (cardNumber.hasError('pattern')) {
-                Card number must be exactly 16 digits.
-              }
-            </p>
-          }
-        </label>
+          <label class="block space-y-1.5">
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">CVV</span>
+            <input
+              type="text"
+              formControlName="cvv"
+              inputmode="numeric"
+              maxlength="3"
+              autocomplete="cc-csc"
+              placeholder="3 digits"
+              class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-slate-900 outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
+              [class.border-rose-500]="cvv.invalid && cvv.touched"
+            />
+            @if (cvv.invalid && cvv.touched) {
+              <p class="text-sm text-rose-600 dark:text-rose-400">
+                @if (cvv.hasError('required')) {
+                  CVV is required.
+                } @else if (cvv.hasError('pattern')) {
+                  CVV must be exactly 3 digits.
+                }
+              </p>
+            }
+          </label>
 
-        <label class="block space-y-1.5">
-          <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Expiry date</span>
-          <input
-            type="text"
-            formControlName="expiryDate"
-            maxlength="5"
-            autocomplete="cc-exp"
-            placeholder="MM/YY"
-            class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-slate-900 outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
-            [class.border-rose-500]="expiryDate.invalid && expiryDate.touched"
-          />
-          @if (expiryDate.invalid && expiryDate.touched) {
-            <p class="text-sm text-rose-600 dark:text-rose-400">
-              @if (expiryDate.hasError('required')) {
-                Expiry date is required.
-              } @else if (expiryDate.hasError('pattern')) {
-                Use MM/YY format.
-              }
-            </p>
-          }
-        </label>
+          <label class="block space-y-1.5">
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">
+              Amount to pay
+            </span>
+            <input
+              type="number"
+              formControlName="amountPaid"
+              step="0.01"
+              min="0"
+              class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-slate-900 outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
+              [class.border-rose-500]="
+                (amountPaid.invalid && amountPaid.touched) ||
+                (payment.hasError('amountMismatch') && amountPaid.touched)
+              "
+            />
+            @if (amountPaid.invalid && amountPaid.touched) {
+              <p class="text-sm text-rose-600 dark:text-rose-400">Enter a valid amount.</p>
+            }
+            @if (payment.hasError('amountMismatch') && amountPaid.touched) {
+              <p class="text-sm text-rose-600 dark:text-rose-400">
+                Amount must match the order total
+                ({{ cartService.total() | currency: 'USD' : 'symbol' : '1.2-2' }}).
+              </p>
+            }
+          </label>
+        </fieldset>
+
+        @if (isStockPending) {
+          <p class="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:bg-amber-950 dark:text-amber-200">
+            Verifying stock...
+          </p>
+        }
+
+        @if (stockError; as stock) {
+          <p class="rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700 dark:bg-rose-950 dark:text-rose-300">
+            Insufficient stock for {{ stock.name }}
+            @if (stock.available !== undefined) {
+              (available: {{ stock.available }}).
+            }
+          </p>
+        }
+
+        @if (stockCheckFailed) {
+          <p class="rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700 dark:bg-rose-950 dark:text-rose-300">
+            Could not verify stock. Please try again.
+          </p>
+        }
 
         <button
           type="submit"
           class="w-full rounded-xl bg-teal-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-600 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500 dark:disabled:bg-slate-700 dark:disabled:text-slate-400"
-          [disabled]="checkoutForm.invalid"
+          [disabled]="checkoutForm.invalid || isStockPending"
         >
-          Place order
+          @if (isStockPending) {
+            Verifying stock...
+          } @else {
+            Place order
+          }
         </button>
       </form>
 
@@ -148,11 +233,19 @@
             </li>
           }
         </ul>
-        <div class="mt-4 border-t border-slate-100 pt-4 dark:border-slate-800">
-          <p class="text-sm text-slate-500 dark:text-slate-400">Total</p>
-          <p class="text-2xl font-bold text-slate-900 dark:text-slate-50">
-            {{ cartService.totalPrice() | currency: 'USD' : 'symbol' : '1.2-2' }}
-          </p>
+        <div class="mt-4 space-y-2 border-t border-slate-100 pt-4 text-sm dark:border-slate-800">
+          <div class="flex justify-between text-slate-600 dark:text-slate-400">
+            <span>Subtotal</span>
+            <span>{{ cartService.subtotal() | currency: 'USD' : 'symbol' : '1.2-2' }}</span>
+          </div>
+          <div class="flex justify-between text-slate-600 dark:text-slate-400">
+            <span>Discount (10% over $200)</span>
+            <span>-{{ cartService.discount() | currency: 'USD' : 'symbol' : '1.2-2' }}</span>
+          </div>
+          <div class="flex justify-between text-base font-bold text-slate-900 dark:text-slate-50">
+            <span>Total</span>
+            <span>{{ cartService.total() | currency: 'USD' : 'symbol' : '1.2-2' }}</span>
+          </div>
         </div>
       </aside>
     </div>
