@@ -27,6 +27,26 @@ export const routes: Routes = [
       import('@features/checkout/pages/checkout/checkout').then((m) => m.Checkout),
   },
   {
+    path: 'pago/exito',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('@features/checkout/pages/pago-exito/pago-exito').then((m) => m.PagoExito),
+  },
+  {
+    path: 'pago/cancelado',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('@features/checkout/pages/pago-cancelado/pago-cancelado').then(
+        (m) => m.PagoCancelado,
+      ),
+  },
+  {
+    path: 'mis-compras',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('@features/checkout/pages/mis-compras/mis-compras').then((m) => m.MisCompras),
+  },
+  {
     path: 'admin',
     loadComponent: () =>
       import('@features/catalog/pages/product-admin/product-admin').then(

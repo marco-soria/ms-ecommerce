@@ -9,7 +9,7 @@
     "test": "ng test"
   },
   "private": true,
-  "packageManager": "pnpm@11.5.3",
+  "packageManager": "pnpm@12.8.1",
   "dependencies": {
     "@angular/animations": "^22.1.7",
     "@angular/cdk": "^22.2.0",
@@ -31,6 +31,7 @@
     "jsdom": "^28.0.0",
     "postcss": "^8.5.3",
     "prettier": "^3.8.1",
+    "supabase": "^2.118.0",
     "tailwindcss": "^4.1.12",
     "typescript": "~6.0.2",
     "vitest": "^4.0.8"

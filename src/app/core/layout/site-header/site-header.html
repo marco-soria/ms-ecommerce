@@ -43,6 +43,15 @@
         >
           Checkout
         </a>
+        @if (auth.isLoggedIn()) {
+          <a
+            routerLink="/mis-compras"
+            routerLinkActive="bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-300"
+            class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+          >
+            My orders
+          </a>
+        }
         <a
           routerLink="/admin"
           routerLinkActive="bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-300"
